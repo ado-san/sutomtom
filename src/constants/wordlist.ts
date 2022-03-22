@@ -1,7 +1,7 @@
 import { CONFIG } from './config'
 
 export const WORDS = [
- 'bongos',
+'bongos',
   'cither',
   'cornet',
   'crotal',
@@ -15,8 +15,6 @@ export const WORDS = [
   'tamtam',
   'tomtom',
   'tymbal',
-  'balim',
-  'bilan',
   'vielle',
   'violin',
   'bugles',
@@ -58,7 +56,7 @@ export const WORDS = [
   'bowing',
   'grunge',
   'bridge',
-  '̱burden',
+  'burden',
   'cantor',
   'choral',
   'chorus',
