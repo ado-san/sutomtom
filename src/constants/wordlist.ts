@@ -37,7 +37,7 @@ export const WORDS = [
   'oliver',
   'mihail',
   'xitofu',
-  'tybocẖ',
+  'tyboch',
   'sergio',
   'piotre',
   'siruce',
