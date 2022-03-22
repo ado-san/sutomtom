@@ -58,7 +58,7 @@ export const VALIDGUESSES = [
   'bowing',
   'grunge',
   'bridge',
-  '̱burden',
+  'burden',
   'cantor',
   'choral',
   'chorus',
