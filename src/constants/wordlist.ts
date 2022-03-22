@@ -68,7 +68,7 @@ export const WORDS = [
   'entree',
   'fugato',
   'giusto',
-  'hammeṟ',
+  'hammer',
   'hocket',
   'lament',
   'leader',
