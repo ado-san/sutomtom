@@ -15,8 +15,6 @@ export const VALIDGUESSES = [
   'tamtam',
   'tomtom',
   'tymbal',
-  'balim',
-  'bilan',
   'vielle',
   'violin',
   'bugles',
