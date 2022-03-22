@@ -37,7 +37,7 @@ export const VALIDGUESSES = [
   'oliver',
   'mihail',
   'xitofu',
-  'tybocẖ',
+  'tyboch',
   'sergio',
   'piotre',
   'siruce',
