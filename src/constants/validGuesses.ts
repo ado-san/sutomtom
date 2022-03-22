@@ -68,7 +68,7 @@ export const VALIDGUESSES = [
   'entree',
   'fugato',
   'giusto',
-  'hammeṟ',
+  'hammer',
   'hocket',
   'lament',
   'leader',
