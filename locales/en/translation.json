@@ -1,11 +1,11 @@
 {
     "about": "About this game",
-    "gameName": "Not Wordle - {{language}}",
+    "gameName": "SuTomTom - {{language}}",
     "enterKey": "Enter",
     "deleteKey": "Delete",
-    "notEnoughLetters": "Not enough letters",
-    "wordNotFound": "Word not found",
-    "solution": "The word was {{solution}}",
+    "notEnoughLetters": "You have fat fingers ?",
+    "wordNotFound": "We do not use these kind of words in here",
+    "solution": "Stupid ! The word was {{solution}}",
     "gameCopied": "Game copied to clipboard",
     "howToPlay": "How to play",
     "instructions": "Guess the word in {{tries}} tries. After each guess, the color of the tiles will change to show how close your guess was to the word.",
@@ -22,8 +22,8 @@
     "newWordCountdown": "New word in",
     "share": "Share",
     "winMessages": [
-        "Great Job!",
-        "Awesome",
+        "Bravo!",
+        "Drinks on you !",
         "Well done!"
     ],
     "firstExampleWord": [{
