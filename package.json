@@ -1,7 +1,7 @@
 {
-    "name": "any-language-wordle",
+    "name": "SuTomTom",
     "version": "0.1.0",
-    "homepage": "https://ado-san.github.io/AnyLanguage-Wordle",
+    "homepage": "https://ado-san.github.io/sutomtom",
     "private": true,
     "dependencies": {
         "@bcgov/bc-sans": "^1.0.1",
