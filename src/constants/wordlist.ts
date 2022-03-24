@@ -1,7 +1,8 @@
 import { CONFIG } from './config'
 
 export const WORDS = [
-'bongos',
+  'putain',
+  'bongos',
   'cither',
   'cornet',
   'crotal',
