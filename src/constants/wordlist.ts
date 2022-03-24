@@ -36,7 +36,6 @@ export const WORDS = [
   'clodio',
   'oliver',
   'mihail',
-  'xitofu',
   'tyboch',
   'sergio',
   'piotre',
