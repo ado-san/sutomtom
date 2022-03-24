@@ -1,6 +1,7 @@
 import { CONFIG } from './config'
 
 export const VALIDGUESSES = [
+  'putain',
   'bongos',
   'cither',
   'cornet',
