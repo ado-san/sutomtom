@@ -94,7 +94,6 @@ export const WORDS = [
   'bambin',
   'aviron',
   'copain',
-  'sangria',
   'amants',
   'dreams',
   'gowest',
