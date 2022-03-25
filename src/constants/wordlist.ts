@@ -100,10 +100,11 @@ export const WORDS = [
   'gowest',
   'pixuli',
   'griego',
-  'pastis',
+  'tekila',
   'titine',
   'chatte',
-  'pastis',
+  'vodkas',
+  'whisky',
 ]
 
 if (CONFIG.normalization) {
