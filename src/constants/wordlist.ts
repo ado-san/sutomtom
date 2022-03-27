@@ -102,7 +102,6 @@ export const WORDS = [
   'whisky',
   'adagio',
   'malika',
-
 ]
 
 if (CONFIG.normalization) {
