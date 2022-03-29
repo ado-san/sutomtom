@@ -97,6 +97,7 @@ export const WORDS = [
   'vivace',
   'tenors',
   'vivace',
+  'france',
   'volume',
   'griego',
 ]
