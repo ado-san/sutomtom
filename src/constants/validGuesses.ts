@@ -97,6 +97,7 @@ export const VALIDGUESSES = [
   'vivace',
   'tenors',
   'vivace',
+  'france',
   'volume',
   'griego',
   'abacay', 'abacus', 'abased', 'abaser', 'abasia', 'abasic', 'abater', 'abatis', 'abaton', 'abator', 'abbacy', 'abbasi', 'abbess', 'abdest', 'abduce', 'abduct', 'abeigh', 'abidal', 'abider', 
