@@ -55,7 +55,7 @@ export const VALIDGUESSES = [
   'piotre',
   'tampon',
   'entree',
-  'perrin',
+  'ricard',
   'leader',
   'thomas',
   'accent',
