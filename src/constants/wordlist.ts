@@ -100,6 +100,7 @@ export const WORDS = [
   'france',
   'volume',
   'griego',
+  'ricard',
 ]
 
 if (CONFIG.normalization) {
