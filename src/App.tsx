@@ -23,6 +23,8 @@ import './i18n'
 import { withTranslation, WithTranslation } from 'react-i18next'
 
 const ALERT_TIME_MS = 2000
+const statsModalTimeout = useRef<number | null>(null)
+const hasOpenedStatsModal = useRef(false)
 
 const App: React.FC<WithTranslation> = ({ t, i18n }) => {
   const [currentGuess, setCurrentGuess] = useState<Array<string>>([])
@@ -61,24 +63,49 @@ const App: React.FC<WithTranslation> = ({ t, i18n }) => {
   }
   const [stats, setStats] = useState(() => loadStats())
 
+  const startNewGame = () => {
+    hasOpenedStatsModal.current = false
+    setIsStatsModalOpen(false)
+    // reset guesses, solution, etc.
+  }
+
   useEffect(() => {
     saveGameStateToLocalStorage({ guesses, solution })
   }, [guesses])
 
   useEffect(() => {
+    if (statsModalTimeout.current) {
+      clearTimeout(statsModalTimeout.current)
+      statsModalTimeout.current = null
+    }
+
+    if (hasOpenedStatsModal.current) return
+
     if (isGameWon) {
       setSuccessAlert(
         WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)]
       )
-      setTimeout(() => {
+      statsModalTimeout.current = window.setTimeout(() => {
         setSuccessAlert('')
         setIsStatsModalOpen(true)
+        hasOpenedStatsModal.current = true
+        statsModalTimeout.current = null
       }, ALERT_TIME_MS)
     }
+
     if (isGameLost) {
-      setTimeout(() => {
+      statsModalTimeout.current = window.setTimeout(() => {
         setIsStatsModalOpen(true)
+        hasOpenedStatsModal.current = true
+        statsModalTimeout.current = null
       }, ALERT_TIME_MS)
+    }
+
+    return () => {
+      if (statsModalTimeout.current) {
+        clearTimeout(statsModalTimeout.current)
+        statsModalTimeout.current = null
+      }
     }
   }, [isGameWon, isGameLost, WIN_MESSAGES])
 
@@ -218,11 +245,11 @@ const App: React.FC<WithTranslation> = ({ t, i18n }) => {
       <StatsModal
         isOpen={isStatsModalOpen}
         handleClose={() => {
-          // clear pending timer so it doesn't re-open the modal
           if (statsModalTimeout.current) {
             clearTimeout(statsModalTimeout.current)
             statsModalTimeout.current = null
           }
+          hasOpenedStatsModal.current = true
           setIsStatsModalOpen(false)
         }}
         guesses={guesses}
