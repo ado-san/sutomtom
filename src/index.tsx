@@ -4,14 +4,20 @@ import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 
+const rootEl = document.getElementById('root') as HTMLElement | null
+// ensure hidden in case HTML didn't apply or was overridden
+if (rootEl) rootEl.style.visibility = 'hidden'
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
-  document.getElementById('root')
+  rootEl,
+  // reveal when render completes
+  () => {
+    if (rootEl) rootEl.style.visibility = 'visible'
+  }
 )
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+// ...existing code...
 reportWebVitals()
