@@ -1,7 +1,7 @@
 import { InformationCircleIcon } from '@heroicons/react/outline'
 import { ChartBarIcon } from '@heroicons/react/outline'
 import { TranslateIcon } from '@heroicons/react/outline'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Alert } from './components/alerts/Alert'
 import { Grid } from './components/grid/Grid'
 import { Keyboard } from './components/keyboard/Keyboard'
@@ -35,6 +35,7 @@ const App: React.FC<WithTranslation> = ({ t, i18n }) => {
   const [isWordNotFoundAlertOpen, setIsWordNotFoundAlertOpen] = useState(false)
   const [isGameLost, setIsGameLost] = useState(false)
   const [successAlert, setSuccessAlert] = useState('')
+
   const [guesses, setGuesses] = useState<string[][]>(() => {
     const loaded = loadGameStateFromLocalStorage()
     if (loaded?.solution !== solution) {
@@ -144,6 +145,45 @@ const App: React.FC<WithTranslation> = ({ t, i18n }) => {
     )
   }
 
+  const statsModalTimeout = useRef<number | null>(null)
+
+  useEffect(() => {
+    saveGameStateToLocalStorage({ guesses, solution })
+  }, [guesses])
+
+  useEffect(() => {
+    // clear any previous timer when dependencies change
+    if (statsModalTimeout.current) {
+      clearTimeout(statsModalTimeout.current)
+      statsModalTimeout.current = null
+    }
+
+    if (isGameWon) {
+      setSuccessAlert(
+        WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)]
+      )
+      statsModalTimeout.current = window.setTimeout(() => {
+        setSuccessAlert('')
+        setIsStatsModalOpen(true)
+        statsModalTimeout.current = null
+      }, ALERT_TIME_MS)
+    }
+
+    if (isGameLost) {
+      statsModalTimeout.current = window.setTimeout(() => {
+        setIsStatsModalOpen(true)
+        statsModalTimeout.current = null
+      }, ALERT_TIME_MS)
+    }
+
+    return () => {
+      if (statsModalTimeout.current) {
+        clearTimeout(statsModalTimeout.current)
+        statsModalTimeout.current = null
+      }
+    }
+  }, [isGameWon, isGameLost, WIN_MESSAGES])
+
   return (
     <div className="py-8 max-w-7xl mx-auto sm:px-6 lg:px-8">
       <div className="flex w-80 mx-auto items-center mb-8">
@@ -177,7 +217,14 @@ const App: React.FC<WithTranslation> = ({ t, i18n }) => {
       />
       <StatsModal
         isOpen={isStatsModalOpen}
-        handleClose={() => setIsStatsModalOpen(false)}
+        handleClose={() => {
+          // clear pending timer so it doesn't re-open the modal
+          if (statsModalTimeout.current) {
+            clearTimeout(statsModalTimeout.current)
+            statsModalTimeout.current = null
+          }
+          setIsStatsModalOpen(false)
+        }}
         guesses={guesses}
         gameStats={stats}
         isGameLost={isGameLost}
