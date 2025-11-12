@@ -23,8 +23,6 @@ import './i18n'
 import { withTranslation, WithTranslation } from 'react-i18next'
 
 const ALERT_TIME_MS = 2000
-const statsModalTimeout = useRef<number | null>(null)
-const hasOpenedStatsModal = useRef(false)
 
 const App: React.FC<WithTranslation> = ({ t, i18n }) => {
   const [currentGuess, setCurrentGuess] = useState<Array<string>>([])
@@ -54,6 +52,7 @@ const App: React.FC<WithTranslation> = ({ t, i18n }) => {
     }
     return loaded.guesses
   })
+
   const WIN_MESSAGES = t('winMessages', { returnObjects: true })
   const TRACKING_ID = CONFIG.googleAnalytics
 
@@ -61,18 +60,27 @@ const App: React.FC<WithTranslation> = ({ t, i18n }) => {
     ReactGA.initialize(TRACKING_ID)
     ReactGA.pageview(window.location.pathname)
   }
+
   const [stats, setStats] = useState(() => loadStats())
+
+  // 🧠 Timer + reopen guard
+  const statsModalTimeout = useRef<number | null>(null)
+  const hasOpenedStatsModal = useRef(false)
 
   const startNewGame = () => {
     hasOpenedStatsModal.current = false
     setIsStatsModalOpen(false)
-    // reset guesses, solution, etc.
+    setIsGameWon(false)
+    setIsGameLost(false)
+    setGuesses([])
   }
 
+  // 🧩 Save game state
   useEffect(() => {
     saveGameStateToLocalStorage({ guesses, solution })
   }, [guesses])
 
+  // 🧩 Manage StatsModal timing (with reopen prevention)
   useEffect(() => {
     if (statsModalTimeout.current) {
       clearTimeout(statsModalTimeout.current)
@@ -109,6 +117,7 @@ const App: React.FC<WithTranslation> = ({ t, i18n }) => {
     }
   }, [isGameWon, isGameLost, WIN_MESSAGES])
 
+  // 🧩 Game input handlers
   const onChar = (value: string) => {
     if (
       currentGuess.length < CONFIG.wordLength &&
@@ -141,6 +150,7 @@ const App: React.FC<WithTranslation> = ({ t, i18n }) => {
         setIsWordNotFoundAlertOpen(false)
       }, ALERT_TIME_MS)
     }
+
     const winningWord = isWinningWord(currentGuess.join(''))
 
     if (
@@ -162,6 +172,7 @@ const App: React.FC<WithTranslation> = ({ t, i18n }) => {
       }
     }
   }
+
   let translateElement = <div></div>
   if (CONFIG.availableLangs.length > 1) {
     translateElement = (
@@ -172,45 +183,7 @@ const App: React.FC<WithTranslation> = ({ t, i18n }) => {
     )
   }
 
-  const statsModalTimeout = useRef<number | null>(null)
-
-  useEffect(() => {
-    saveGameStateToLocalStorage({ guesses, solution })
-  }, [guesses])
-
-  useEffect(() => {
-    // clear any previous timer when dependencies change
-    if (statsModalTimeout.current) {
-      clearTimeout(statsModalTimeout.current)
-      statsModalTimeout.current = null
-    }
-
-    if (isGameWon) {
-      setSuccessAlert(
-        WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)]
-      )
-      statsModalTimeout.current = window.setTimeout(() => {
-        setSuccessAlert('')
-        setIsStatsModalOpen(true)
-        statsModalTimeout.current = null
-      }, ALERT_TIME_MS)
-    }
-
-    if (isGameLost) {
-      statsModalTimeout.current = window.setTimeout(() => {
-        setIsStatsModalOpen(true)
-        statsModalTimeout.current = null
-      }, ALERT_TIME_MS)
-    }
-
-    return () => {
-      if (statsModalTimeout.current) {
-        clearTimeout(statsModalTimeout.current)
-        statsModalTimeout.current = null
-      }
-    }
-  }, [isGameWon, isGameLost, WIN_MESSAGES])
-
+  // 🧩 JSX return
   return (
     <div className="py-8 max-w-7xl mx-auto sm:px-6 lg:px-8">
       <div className="flex w-80 mx-auto items-center mb-8">
@@ -227,21 +200,26 @@ const App: React.FC<WithTranslation> = ({ t, i18n }) => {
           onClick={() => setIsStatsModalOpen(true)}
         />
       </div>
+
       <Grid guesses={guesses} currentGuess={currentGuess} />
+
       <Keyboard
         onChar={onChar}
         onDelete={onDelete}
         onEnter={onEnter}
         guesses={guesses}
       />
+
       <TranslateModal
         isOpen={isI18nModalOpen}
         handleClose={() => setIsI18nModalOpen(false)}
       />
+
       <InfoModal
         isOpen={isInfoModalOpen}
         handleClose={() => setIsInfoModalOpen(false)}
       />
+
       <StatsModal
         isOpen={isStatsModalOpen}
         handleClose={() => {
@@ -261,6 +239,7 @@ const App: React.FC<WithTranslation> = ({ t, i18n }) => {
           return setTimeout(() => setSuccessAlert(''), ALERT_TIME_MS)
         }}
       />
+
       <AboutModal
         isOpen={isAboutModalOpen}
         handleClose={() => setIsAboutModalOpen(false)}
