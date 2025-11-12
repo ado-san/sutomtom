@@ -55,19 +55,23 @@ const PortalModal = ({
       aria-modal="true"
       className="fixed inset-0 z-50 flex items-end sm:items-center justify-center"
     >
-      {/* Backdrop */}
+      {/* Backdrop: use onClick (not onMouseDown) so the click won't fall through to underlying elements */}
       <div
         className={`fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-200 ${
           isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
-        onMouseDown={handleClose}
+        onClick={(e) => {
+          // click happened on backdrop — close modal and stop propagation
+          e.stopPropagation()
+          handleClose()
+        }}
         style={{ willChange: 'opacity' }}
       />
 
-      {/* Panel */}
+      {/* Panel: stop click propagation so clicks inside don't close modal */}
       <div
         className="relative inline-block bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-opacity transition-transform duration-200 sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6"
-        onMouseDown={(e) => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
         style={{
           opacity: isOpen ? 1 : 0,
           transform: isOpen ? 'translateY(0) scale(1)' : 'translateY(8px) scale(.98)',
@@ -78,7 +82,10 @@ const PortalModal = ({
         <div className="absolute top-3 right-3">
           <button
             type="button"
-            onClick={handleClose}
+            onClick={(e) => {
+              e.stopPropagation()
+              handleClose()
+            }}
             aria-label="Close"
             className="text-gray-500 hover:text-gray-700"
           >
